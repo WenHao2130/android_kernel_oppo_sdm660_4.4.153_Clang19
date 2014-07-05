@@ -10996,7 +10996,6 @@ static int active_load_balance_cpu_stop(void *data)
 	target_cpu = busiest_rq->push_cpu;
 	if (push_task) {
 		if (task_on_rq_queued(push_task) &&
-			push_task->state == TASK_RUNNING &&
 			task_cpu(push_task) == busiest_cpu &&
 					cpu_online(target_cpu)) {
 			detach_task(push_task, &env);
