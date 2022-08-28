@@ -4608,10 +4608,13 @@ static void cfq_registered_queue(struct request_queue *q)
 	struct cfq_data *cfqd = e->elevator_data;
 
 	/*
-	 * Default to IOPS mode with no idling for SSDs
+	 * Tuning CFQ built-in parameters for SSD devices
 	 */
-	if (blk_queue_nonrot(q))
+	if (blk_queue_nonrot(q)) {
 		cfqd->cfq_slice_idle = 0;
+		cfqd->cfq_back_max = 4096;
+		cfqd->cfq_back_penalty = 1;
+	}
 }
 
 /*
