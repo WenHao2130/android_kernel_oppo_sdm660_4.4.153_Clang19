@@ -1086,6 +1086,7 @@ struct ext4_inode_info {
 //yh@PSW.BSP.Storage.EXT4, 2018-11-26 add for ext4 async discard suppot
 #define EXT4_MOUNT_ASYNC_DISCARD	0x2000000 /* Async issue discard request */
 #endif
+#define EXT4_MOUNT_ASYNC_FSYNC 		0x2000000 /* Tune fsync according to calling process's uid/gid */
 #define EXT4_MOUNT_DELALLOC		0x8000000 /* Delalloc support */
 #define EXT4_MOUNT_DATA_ERR_ABORT	0x10000000 /* Abort on file data write */
 #define EXT4_MOUNT_BLOCK_VALIDITY	0x20000000 /* Block validity checking */

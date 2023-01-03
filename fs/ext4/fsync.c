@@ -27,6 +27,8 @@
 #include <linux/sched.h>
 #include <linux/writeback.h>
 #include <linux/blkdev.h>
+#include <linux/cred.h>
+#include <linux/uidgid.h>
 
 #include "ext4.h"
 #include "ext4_jbd2.h"
@@ -36,6 +38,9 @@
 /*jason.tang@TECH.BSP.Kernel.Storage, 2019-05-20, add control ext4 fsync*/
 extern unsigned int ext4_fsync_enable_status;
 #endif
+
+#define AID_SYSTEM 1000 /* system server */
+
 /*
  * If we're not journaling and this is a just-created file, we have to
  * sync our parent directory (if it was freshly created) since
@@ -147,6 +152,18 @@ int ext4_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
 	    !jbd2_trans_will_send_data_barrier(journal, commit_tid))
 #endif
 		needs_barrier = true;
+
+	if (test_opt(inode->i_sb, ASYNC_FSYNC)) {
+		if (!uid_eq(GLOBAL_ROOT_UID, current_fsuid()) &&
+			  !(in_group_p(make_kgid(current_user_ns(), AID_SYSTEM)))) {
+
+			if (jbd2_transaction_need_wait(journal, commit_tid))
+				jbd2_log_start_commit(journal, commit_tid);
+
+			goto out;
+		}
+	}
+
 	ret = jbd2_complete_transaction(journal, commit_tid);
 	if (needs_barrier) {
 		err = blkdev_issue_flush(inode->i_sb->s_bdev, GFP_KERNEL, NULL);
