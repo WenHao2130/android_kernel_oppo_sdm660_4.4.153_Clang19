@@ -2315,7 +2315,7 @@ static void get_scan_count(struct lruvec *lruvec, int swappiness,
 	if (!global_reclaim(sc))
 		force_scan = true;
 
-	prepare_workingset_protection(pgdat, sc);
+	prepare_workingset_protection(zone, sc);
 
 	/* If we have no swap space, do not bother scanning anon pages. */
 #ifndef VENDOR_EDIT //yixue.ge@psw.bsp.kernel.driver 20170810 modify for reserver some zram disk size
