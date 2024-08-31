@@ -119,3 +119,6 @@ android/configs/android-*.cfg
 
 # default output directory
 out
+
+# KernelSU
+KernelSU
