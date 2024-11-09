@@ -1,0 +1,11 @@
+name: Build Kernel and AnyKernel3
+on:
+  workflow_dispatch:
+
+jobs:
+  R11:
+    uses: ./.github/workflows/Kbuild_16051.yml
+  R11s:
+    uses: ./.github/workflows/Kbuild_17011.yml
+  R15x-K1:
+    uses: ./.github/workflows/Kbuild_18005.yml
